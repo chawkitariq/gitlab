@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(terraform plan*)",
+      "Bash(terraform validate*)",
+      "Bash(terraform fmt*)",
+      "Bash(aws sts get-caller-identity*)"
+    ],
+    "deny": [
+      "Bash(terraform apply*)",
+      "Bash(terraform destroy*)",
+      "Bash(aws * delete*)",
+      "Bash(aws * terminate*)",
+      "Read(*.tfvars)",
+      "Read(**/.env*)",
+      "Read(**/backend.hcl)"
+    ]
+  },
+  "enabledPlugins": {
+    "context7@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
+    "terraform@claude-plugins-official": true,
+    "commit-commands@claude-plugins-official": true,
+    "terraform-code-generation@hashicorp": true
+  },
+  "extraKnownMarketplaces": {
+    "hashicorp": {
+      "source": {
+        "source": "github",
+        "repo": "hashicorp/agent-skills"
+      }
+    }
+  }
+}

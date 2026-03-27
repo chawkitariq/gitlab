@@ -1,0 +1,92 @@
+{
+  "mcpServers": {
+    "terraform": {
+      "type": "http",
+      "url": "http://localhost:8080/mcp"
+    },
+    "awslabs.aws-api-mcp-server": {
+      "command": "uvx",
+      "args": [
+        "awslabs.aws-api-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_REGION": "eu-west-3",
+        "REQUIRE_MUTATION_CONSENT": "true",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      }
+    },
+    "awslabs.ecs-mcp-server": {
+      "command": "uvx",
+      "args": [
+        "awslabs.ecs-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_REGION": "eu-west-3",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      }
+    },
+    "awslabs.cloudwatch-mcp-server": {
+      "command": "uvx",
+      "args": [
+        "awslabs.cloudwatch-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_REGION": "eu-west-3",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      }
+    },
+    "awslabs.elasticache-mcp-server": {
+      "command": "uvx",
+      "args": [
+        "awslabs.elasticache-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_REGION": "eu-west-3",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      }
+    },
+    "awslabs.postgres-mcp-server": {
+      "command": "uvx",
+      "args": [
+        "awslabs.postgres-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_REGION": "eu-west-3",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      }
+    },
+    "awslabs.aws-documentation-mcp-server": {
+      "command": "uvx",
+      "args": [
+        "awslabs.aws-documentation-mcp-server@latest"
+      ],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR",
+        "AWS_DOCUMENTATION_PARTITION": "aws"
+      }
+    },
+    "awslabs.cost-explorer-mcp-server": {
+      "command": "uvx",
+      "args": [
+        "awslabs.cost-explorer-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_REGION": "eu-west-3",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      }
+    },
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp"
+    },
+    "excalidraw": {
+      "type": "http",
+      "url": "https://mcp.excalidraw.com"
+    },
+    "localstack-mcp-server": {
+      "command": "npx",
+      "args": ["-y", "@localstack/localstack-mcp-server"],
+      "env": {}
+    }
+  }
+}
