@@ -22,13 +22,26 @@
     "claude-md-management@claude-plugins-official": true,
     "terraform@claude-plugins-official": true,
     "commit-commands@claude-plugins-official": true,
-    "terraform-code-generation@hashicorp": true
+    "terraform-code-generation@hashicorp": true,
+    "requirements-clarity@agent-toolkit": true,
+    "design-system-starter@agent-toolkit": true,
+    "agent-mermaid-diagram-specialist@agent-toolkit": true,
+    "agent-ui-ux-designer@agent-toolkit": true,
+    "agent-md-refactor@agent-toolkit": true,
+    "crafting-effective-readmes@agent-toolkit": true,
+    "excalidraw@agent-toolkit": true
   },
   "extraKnownMarketplaces": {
     "hashicorp": {
       "source": {
         "source": "github",
         "repo": "hashicorp/agent-skills"
+      }
+    },
+    "agent-toolkit": {
+      "source": {
+        "source": "github",
+        "repo": "softaworks/agent-toolkit"
       }
     }
   }
