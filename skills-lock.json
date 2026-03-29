@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "skills": {
+    "localstack": {
+      "source": "localstack/skills",
+      "sourceType": "github",
+      "computedHash": "ac9e6fd8aa895191fb75e2df4d3d435c8b66d79a7e273b37fbbc46e1d1b4f853"
+    },
+    "localstack-deploy": {
+      "source": "localstack/skills",
+      "sourceType": "github",
+      "computedHash": "1d34d549502d2e7915e26210b88fe59e1ceede2d093199627e256f89784ee2c4"
+    },
+    "localstack-extensions": {
+      "source": "localstack/skills",
+      "sourceType": "github",
+      "computedHash": "51a576a6169d150f7a397ab8ea76abf08e507b54b8a69d2baacddc0575336879"
+    },
+    "localstack-iam": {
+      "source": "localstack/skills",
+      "sourceType": "github",
+      "computedHash": "baf9a97e87e6b10366133f3118c6d4b78d0557079cec0253c1e665effe34f090"
+    },
+    "localstack-logs": {
+      "source": "localstack/skills",
+      "sourceType": "github",
+      "computedHash": "6fb18c443f9891c083ca495d7e1717751e5258d36fc7f8ea46b7c0d6d6b9f73f"
+    },
+    "localstack-state": {
+      "source": "localstack/skills",
+      "sourceType": "github",
+      "computedHash": "bb23113c1f73203eaf9e95f031173276deddf7f219e2a156114a062edb3b4cc9"
+    }
+  }
+}
