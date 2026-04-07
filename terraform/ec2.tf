@@ -1,5 +1,5 @@
 resource "aws_instance" "gitlab" {
-  ami                    = data.aws_ami.gitlab_ce.id
+  ami                    = var.gitlab_restore_from_backup ? data.aws_ami.gitlab_backup[0].id : data.aws_ami.gitlab_ce.id
   instance_type          = var.ec2_instance_type
   subnet_id              = var.private_subnet_ids[0]
   vpc_security_group_ids = [aws_security_group.ec2.id]

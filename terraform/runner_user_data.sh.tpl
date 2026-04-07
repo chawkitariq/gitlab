@@ -47,6 +47,7 @@ if [ -z "$EXISTING_TOKEN" ]; then
     --form "runner_type=instance_type" \
     --form "description=${runner_description}" \
     --form "tag_list=${runner_tag_list}" \
+    --form "run_untagged=true" \
     | jq -r '.token')
 
   # Stocker le token pour les reprovisionnements futurs

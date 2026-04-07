@@ -13,6 +13,10 @@ resource "aws_backup_plan" "gitlab" {
     lifecycle {
       delete_after = 7
     }
+
+    recovery_point_tags = {
+      "gitlab-backup" = var.project_name
+    }
   }
 }
 

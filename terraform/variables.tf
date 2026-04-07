@@ -58,6 +58,12 @@ variable "runner_instance_type" {
   default     = "t3.medium"
 }
 
+variable "gitlab_restore_from_backup" {
+  description = "When true, the GitLab EC2 root volume is created from the latest AWS Backup snapshot. Set to true before terraform apply when upgrading GitLab or restoring after a failure. Review the plan before applying — an EC2 replacement will be proposed."
+  type        = bool
+  default     = false
+}
+
 variable "runner_schedule_timezone" {
   description = "Timezone for the runner start/stop schedules (e.g. UTC, Europe/Paris, America/New_York)"
   type        = string

@@ -23,3 +23,15 @@ data "aws_ami" "gitlab_ce" {
   }
 }
 
+# Latest backup AMI — only resolved when gitlab_restore_from_backup = true
+data "aws_ami" "gitlab_backup" {
+  count       = var.gitlab_restore_from_backup ? 1 : 0
+  most_recent = true
+  owners      = ["self"]
+
+  filter {
+    name   = "tag:gitlab-backup"
+    values = [var.project_name]
+  }
+}
+

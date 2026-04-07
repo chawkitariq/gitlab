@@ -95,7 +95,7 @@ if [ ! -f /etc/gitlab/.runner-pat-created ]; then
     token = user.personal_access_tokens.create!(
       name: 'runner-bootstrap',
       scopes: ['api'],
-      expires_at: 10.years.from_now
+      expires_at: 1.year.from_now
     )
     puts token.token
   ")
