@@ -10,7 +10,8 @@ resource "random_password" "redis" {
 }
 
 resource "aws_secretsmanager_secret" "rds_password" {
-  name = "${var.project_name}/rds-password"
+  name                    = "${var.project_name}/rds-password"
+  recovery_window_in_days = 0
 }
 
 resource "aws_secretsmanager_secret_version" "rds_password" {
@@ -19,7 +20,8 @@ resource "aws_secretsmanager_secret_version" "rds_password" {
 }
 
 resource "aws_secretsmanager_secret" "redis_auth_token" {
-  name = "${var.project_name}/redis-auth-token"
+  name                    = "${var.project_name}/redis-auth-token"
+  recovery_window_in_days = 0
 }
 
 resource "aws_secretsmanager_secret_version" "redis_auth_token" {
@@ -28,7 +30,8 @@ resource "aws_secretsmanager_secret_version" "redis_auth_token" {
 }
 
 resource "aws_secretsmanager_secret" "smtp_password" {
-  name = "${var.project_name}/smtp-password"
+  name                    = "${var.project_name}/smtp-password"
+  recovery_window_in_days = 0
 }
 
 resource "aws_secretsmanager_secret_version" "smtp_password" {
@@ -38,10 +41,12 @@ resource "aws_secretsmanager_secret_version" "smtp_password" {
 
 # Written at boot by GitLab user_data via gitlab-rails runner
 resource "aws_secretsmanager_secret" "gitlab_admin_pat" {
-  name = "${var.project_name}/gitlab/admin-pat"
+  name                    = "${var.project_name}/gitlab/admin-pat"
+  recovery_window_in_days = 0
 }
 
 # Written at boot by runner user_data after calling the GitLab API
 resource "aws_secretsmanager_secret" "runner_token" {
-  name = "${var.project_name}/gitlab/runner-token"
+  name                    = "${var.project_name}/gitlab/runner-token"
+  recovery_window_in_days = 0
 }

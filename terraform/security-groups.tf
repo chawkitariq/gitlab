@@ -118,7 +118,7 @@ resource "aws_security_group" "redis" {
 
 resource "aws_security_group" "runner" {
   name        = "${var.project_name}-runner"
-  description = "GitLab Runner — outbound only"
+  description = "GitLab Runner - outbound only"
   vpc_id      = var.vpc_id
 
   egress {
