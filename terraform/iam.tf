@@ -57,6 +57,12 @@ data "aws_iam_policy_document" "ec2_instance_inline" {
     ]
   }
 
+  statement {
+    effect    = "Allow"
+    actions   = ["secretsmanager:PutSecretValue"]
+    resources = [aws_secretsmanager_secret.gitlab_admin_pat.arn]
+  }
+
 }
 
 resource "aws_iam_role_policy" "ec2_instance_inline" {
@@ -103,4 +109,49 @@ resource "aws_iam_user_policy" "ses_smtp" {
 
 resource "aws_iam_access_key" "ses" {
   user = aws_iam_user.ses_smtp.name
+}
+
+# --- GitLab Runner ---
+
+resource "aws_iam_role" "runner" {
+  name = "${var.project_name}-runner"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect    = "Allow"
+      Principal = { Service = "ec2.amazonaws.com" }
+      Action    = "sts:AssumeRole"
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "runner_ssm" {
+  role       = aws_iam_role.runner.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+resource "aws_iam_instance_profile" "runner" {
+  name = "${var.project_name}-runner"
+  role = aws_iam_role.runner.name
+}
+
+data "aws_iam_policy_document" "runner_inline" {
+  statement {
+    effect    = "Allow"
+    actions   = ["secretsmanager:GetSecretValue"]
+    resources = [aws_secretsmanager_secret.gitlab_admin_pat.arn]
+  }
+
+  statement {
+    effect    = "Allow"
+    actions   = ["secretsmanager:GetSecretValue", "secretsmanager:PutSecretValue"]
+    resources = [aws_secretsmanager_secret.runner_token.arn]
+  }
+}
+
+resource "aws_iam_role_policy" "runner_inline" {
+  name   = "${var.project_name}-runner-inline"
+  role   = aws_iam_role.runner.id
+  policy = data.aws_iam_policy_document.runner_inline.json
 }

@@ -35,3 +35,13 @@ resource "aws_secretsmanager_secret_version" "smtp_password" {
   secret_id     = aws_secretsmanager_secret.smtp_password.id
   secret_string = aws_iam_access_key.ses.ses_smtp_password_v4
 }
+
+# Written at boot by GitLab user_data via gitlab-rails runner
+resource "aws_secretsmanager_secret" "gitlab_admin_pat" {
+  name = "${var.project_name}/gitlab/admin-pat"
+}
+
+# Written at boot by runner user_data after calling the GitLab API
+resource "aws_secretsmanager_secret" "runner_token" {
+  name = "${var.project_name}/gitlab/runner-token"
+}

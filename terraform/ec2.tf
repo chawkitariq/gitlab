@@ -22,9 +22,10 @@ resource "aws_instance" "gitlab" {
     s3_bucket         = aws_s3_bucket.gitlab.bucket
     ssh_host          = aws_route53_record.gitlab_ssh.fqdn
     vpc_cidr          = data.aws_vpc.this.cidr_block
-    rds_secret_arn    = aws_secretsmanager_secret.rds_password.arn
-    redis_secret_arn  = aws_secretsmanager_secret.redis_auth_token.arn
-    smtp_secret_arn   = aws_secretsmanager_secret.smtp_password.arn
+    rds_secret_arn       = aws_secretsmanager_secret.rds_password.arn
+    redis_secret_arn     = aws_secretsmanager_secret.redis_auth_token.arn
+    smtp_secret_arn      = aws_secretsmanager_secret.smtp_password.arn
+    admin_pat_secret_arn = aws_secretsmanager_secret.gitlab_admin_pat.arn
     smtp_address      = local.smtp_address
     smtp_port         = local.smtp_port
     smtp_user_name    = aws_iam_access_key.ses.id

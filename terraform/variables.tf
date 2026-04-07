@@ -51,3 +51,9 @@ variable "rds_master_username" {
   type        = string
   default     = "gitlab"
 }
+
+variable "runner_instance_type" {
+  description = "EC2 instance type for the GitLab Runner"
+  type        = string
+  default     = "t3.medium"
+}

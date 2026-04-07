@@ -86,3 +86,24 @@ EOF
 
 # Configurer GitLab
 gitlab-ctl reconfigure
+
+# Créer un Personal Access Token admin pour l'enregistrement du runner
+# Le flag file évite de recréer un PAT si l'instance redémarre
+if [ ! -f /etc/gitlab/.runner-pat-created ]; then
+  PAT=$(gitlab-rails runner "
+    user = User.find_by_username('root')
+    token = user.personal_access_tokens.create!(
+      name: 'runner-bootstrap',
+      scopes: ['api'],
+      expires_at: 10.years.from_now
+    )
+    puts token.token
+  ")
+
+  aws secretsmanager put-secret-value \
+    --region ${aws_region} \
+    --secret-id ${admin_pat_secret_arn} \
+    --secret-string "$PAT"
+
+  touch /etc/gitlab/.runner-pat-created
+fi
