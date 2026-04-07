@@ -57,3 +57,21 @@ variable "runner_instance_type" {
   type        = string
   default     = "t3.medium"
 }
+
+variable "runner_schedule_timezone" {
+  description = "Timezone for the runner start/stop schedules (e.g. UTC, Europe/Paris, America/New_York)"
+  type        = string
+  default     = "UTC"
+}
+
+variable "runner_schedule_start" {
+  description = "Cron expression for when to start the runner (EventBridge format)"
+  type        = string
+  default     = "cron(0 7 ? * MON-FRI *)"
+}
+
+variable "runner_schedule_stop" {
+  description = "Cron expression for when to stop the runner (EventBridge format)"
+  type        = string
+  default     = "cron(0 21 ? * MON-FRI *)"
+}
