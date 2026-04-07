@@ -84,23 +84,61 @@ aws ssm start-session --target <instance-id>
 sudo cat /etc/gitlab/initial_root_password
 ```
 
+## GitLab Runner
+
+The runner EC2 (Ubuntu 24.04, t3.medium) is deployed in the same AZ as GitLab and registers itself automatically on first boot. It runs CI jobs using the Docker executor and picks up untagged jobs by default.
+
+The runner is stopped Mon–Fri at 21:00 UTC and started at 07:00 UTC via EventBridge Scheduler. Override in `terraform.tfvars`:
+
+```hcl
+runner_schedule_timezone = "Europe/Paris"
+runner_schedule_start    = "cron(0 8 ? * MON-FRI *)"
+runner_schedule_stop     = "cron(0 20 ? * MON-FRI *)"
+```
+
+### Renew the runner bootstrap PAT (once a year)
+
+The runner registration uses an admin Personal Access Token stored in Secrets Manager (`gitlab/gitlab/admin-pat`). It expires after 1 year and is only needed when the runner EC2 is reprovisioned.
+
+If the runner is ever reprovisioned after the PAT has expired:
+
+1. **GitLab UI** → Profile avatar → Edit profile → Access tokens → find `runner-bootstrap` → **Rotate**
+2. Copy the new `glpat-xxx` value
+3. Update Secrets Manager:
+
+```bash
+aws secretsmanager put-secret-value \
+  --secret-id gitlab/gitlab/admin-pat \
+  --secret-string "glpat-NEW_VALUE" \
+  --region eu-west-3
+```
+
 ## Runbooks
 
 ### Upgrade GitLab version
 
-Change the version in `terraform.tfvars` and apply. The instance is **replaced** with the new AMI.
+The new EC2 boots from the latest AWS Backup snapshot so all data (`gitlab-secrets.json`, repos, config) is preserved automatically.
 
-> **EBS is always recreated** on instance replacement — it is not preserved. S3 data (artifacts, uploads, LFS, packages) persists. Git repository data and `/etc/gitlab/` (including `gitlab-secrets.json`) live on EBS and will be lost.
->
-> **Critical:** `gitlab-secrets.json` holds encryption keys for CI variables, 2FA secrets, and tokens. If this file is not restored from an AWS Backup snapshot before running `gitlab-ctl reconfigure` on the new instance, all encrypted database columns become unreadable. Always restore from the latest snapshot in the `gitlab-backup` vault before first reconfigure.
+**1 — set in `terraform.tfvars`:**
 
 ```hcl
-gitlab_version = "17.10.0"
+gitlab_version             = "17.10.0"
+gitlab_restore_from_backup = true
 ```
 
+**2 — apply:**
+
 ```bash
-terraform apply
+terraform apply   # review the plan — expect one EC2 replacement
 ```
+
+**3 — verify GitLab is healthy**, then reset the flag to avoid unintended replacements on future applies:
+
+```hcl
+gitlab_restore_from_backup = false
+```
+
+> AWS Backup runs daily at 02:00 UTC and retains snapshots for 7 days. The first backup is taken the night after the initial deploy — upgrades before that first backup should not use `gitlab_restore_from_backup = true`.
 
 ### Check GitLab health
 
